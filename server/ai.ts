@@ -8,8 +8,12 @@ import { eq, ilike, or, and } from "drizzle-orm";
 // Load API Key from ../CodingWorkout/.env if not in current .env
 // In a real scenario, we'd probably symlink or copy the .env, but let's try to read it if process.env.GEMINI_API_KEY is missing.
 import fs from "fs";
-import path from "path";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 let apiKey = process.env.GEMINI_API_KEY;
 

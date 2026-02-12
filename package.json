@@ -1,6 +1,7 @@
 {
   "name": "noormaps",
   "private": true,
+  "type": "module",
   "version": "1.0.0",
   "scripts": {
     "dev": "tsx server/index.ts",

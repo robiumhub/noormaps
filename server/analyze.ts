@@ -4,7 +4,11 @@ import { restaurants, aiAnalysisLogs } from "../shared/schema";
 import { analyzeRestaurant } from "./ai";
 import { eq, isNull, sql, and } from "drizzle-orm";
 import fs from "fs";
-import path from "path";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 import dotenv from "dotenv";
 import fetch from "node-fetch";
 
