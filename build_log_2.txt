@@ -1,0 +1,18 @@
+
+> noormaps@1.0.0 build
+> vite build && tsc
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+vite v5.4.21 building for production...
+(node:221233) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/mdemir/projects/noormaps/postcss.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /home/mdemir/projects/noormaps/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+transforming...
+✓ 1639 modules transformed.
+rendering chunks...
+computing gzip size...
+../dist/public/index.html                   0.41 kB │ gzip:  0.29 kB
+../dist/public/assets/index-BjOxWQb4.css   23.54 kB │ gzip:  5.09 kB
+../dist/public/assets/index-CDH_CzRJ.js   230.71 kB │ gzip: 72.06 kB
+✓ built in 1.55s
