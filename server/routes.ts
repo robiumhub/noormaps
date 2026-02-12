@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import fs from "fs";
 import path from "path";
 import { db } from "./db";
-import { restaurants, reviews } from "@shared/schema";
+import { restaurants, reviews } from "../shared/schema";
 import { eq, ilike, or, sql, desc, count } from "drizzle-orm";
 
 export function registerRoutes(app: Express): Server {

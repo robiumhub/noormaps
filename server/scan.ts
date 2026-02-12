@@ -1,7 +1,7 @@
 
 import "dotenv/config";
 import { db } from "./db";
-import { restaurants, reviews } from "@shared/schema";
+import { restaurants, reviews } from "../shared/schema";
 import { eq, sql, inArray } from "drizzle-orm";
 
 async function scanRestaurants() {

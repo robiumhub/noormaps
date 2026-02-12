@@ -3,7 +3,7 @@ import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import { db } from "./db";
-import { restaurants, reviews } from "@shared/schema";
+import { restaurants, reviews } from "../shared/schema";
 import { sql } from "drizzle-orm";
 
 async function importData() {

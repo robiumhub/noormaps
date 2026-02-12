@@ -2,7 +2,7 @@
 import "dotenv/config";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { db } from "./db";
-import { restaurants, aiAnalysisLogs, reviews } from "@shared/schema";
+import { restaurants, aiAnalysisLogs, reviews } from "../shared/schema";
 import { eq, ilike, or, and } from "drizzle-orm";
 
 // Load API Key from ../CodingWorkout/.env if not in current .env

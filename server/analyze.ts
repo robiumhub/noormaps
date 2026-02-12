@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { db } from "./db";
-import { restaurants, aiAnalysisLogs } from "@shared/schema";
+import { restaurants, aiAnalysisLogs } from "../shared/schema";
 import { analyzeRestaurant } from "./ai";
 import { eq, isNull, sql, and } from "drizzle-orm";
 import fs from "fs";
