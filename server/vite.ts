@@ -2,14 +2,15 @@ import express, { type Express } from "express";
 import fs from "fs";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { createServer as createViteServer, type ViteDevServer } from "vite";
 import { type Server } from "http";
-import viteConfig from "../vite.config";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export async function setupVite(app: Express, server: Server) {
+    const { createServer: createViteServer } = await import("vite");
+    const { default: viteConfig } = await import("../vite.config.js");
+
     const vite = await createViteServer({
         ...viteConfig,
         server: {

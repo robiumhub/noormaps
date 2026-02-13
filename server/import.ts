@@ -3,11 +3,11 @@ import "dotenv/config";
 import fs from "fs";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { db } from "./db";
+import { db } from "./db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-import { restaurants, reviews } from "../shared/schema";
+import { restaurants, reviews } from "../shared/schema.js";
 import { sql } from "drizzle-orm";
 
 async function importData() {

@@ -3,24 +3,65 @@ import { createServer, type Server } from "http";
 import fs from "fs";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { db } from "./db";
+import { db } from "./db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-import { restaurants, reviews } from "../shared/schema";
+import { restaurants, reviews } from "../shared/schema.js";
 import { eq, ilike, or, sql, desc, count } from "drizzle-orm";
 
 export function registerRoutes(app: Express): Server {
-    // Existing route (backward compatibility)
-    app.get("/api/restaurants", (_req, res) => {
+    // List All Restaurants for Home Page
+    app.get("/api/restaurants", async (_req, res) => {
         try {
-            const dataPath = path.resolve(__dirname, "../data/restaurants.json");
-            if (!fs.existsSync(dataPath)) {
-                return res.json([]);
-            }
-            const data = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
-            res.json(data);
+            const allRestaurants = await db.query.restaurants.findMany({
+                with: {
+                    reviews: {
+                        limit: 10
+                    }
+                },
+                orderBy: desc(restaurants.rating)
+            });
+
+            // Map database results to AnalyzedRestaurant interface expected by frontend
+            const mappedData = allRestaurants.map(r => {
+                const data = (r.data as any) || {};
+
+                // Extract halal-related reviews for evidence quotes
+                const keywords = ["halal", "zabiha", "muslim", "meat", "pork", "alcohol"];
+                const halalReviews = r.reviews
+                    .filter(rev => {
+                        const text = (rev.text || "").toLowerCase();
+                        return keywords.some(k => text.includes(k));
+                    })
+                    .map(rev => rev.text)
+                    .filter(Boolean);
+
+                // Map classification based on halalStatus
+                let classification: "verified" | "probable" | "options" | "unconfirmed" = "unconfirmed";
+                if (r.halalStatus === "certified") classification = "verified";
+                else if (r.halalStatus === "partial" || r.halalStatus === "muscle_meat") classification = "probable";
+                else if (r.halalStatus === "mixed") classification = "options";
+
+                return {
+                    title: r.name,
+                    data_id: r.placeId,
+                    address: r.address,
+                    description: r.description,
+                    category: r.category || "Restaurant",
+                    rating: r.rating,
+                    thumbnail: data.thumbnail,
+                    isHalal: r.isHalal,
+                    classification: classification,
+                    halalReviews: halalReviews.slice(0, 5),
+                    halalScore: 0, // Not explicitly used in current UI but required by interface
+                    mentionsZabiha: halalReviews.some(rev => rev?.toLowerCase().includes("zabiha"))
+                };
+            });
+
+            res.json(mappedData);
         } catch (error) {
+            console.error("Fetch Restaurants Error:", error);
             res.status(500).json({ message: "Failed to fetch restaurants" });
         }
     });
